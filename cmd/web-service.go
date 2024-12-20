@@ -13,27 +13,28 @@ var webServiceCmd = &cobra.Command{
 	Long: `A simple cli tool designed to help retrieve json data from a local running 
 image/container on port 8080. This tool was designed specifically to target 
 https://github.com/jdowni000/gameserver. You may hit the root that retrieves condensed
-information for all games available, or provide the id with the flag -i with the id number.
+information for all games available, or provide the id with the flag -g with the id number.
 
 For example: 
 	web-service-cli webservice
 	or
-	web-service-cli webservice -i 1
+	web-service-cli webservice -g 1
 `,
 	Run: webSericeCli,
 }
 
 func init() {
 	rootCmd.AddCommand(webServiceCmd)
-	webServiceCmd.Flags().StringP("id", "i", "", "specific game to retrieve information")
-
+	webServiceCmd.Flags().StringP("get", "g", "", "specific game id to retrieve information")
+	webServiceCmd.Flags().BoolP("list", "l", false, "list all game titles")
 }
 
 func webSericeCli(cmd *cobra.Command, args []string) {
 	host := "localhost"
 	port := "8080"
 	path := "/"
-	id, _ := cmd.Flags().GetString("id")
+	id, _ := cmd.Flags().GetString("get")
+	list, _ := cmd.Flags().GetBool("list")
 
 	if host == "" {
 		host = "localhost"
@@ -45,6 +46,10 @@ func webSericeCli(cmd *cobra.Command, args []string) {
 
 	if id != "" {
 		path = fmt.Sprintf("/game?id=${%s}", id)
+	}
+
+	if list {
+		path = "/list"
 	}
 
 	conn, err := net.Dial("tcp", fmt.Sprintf("%s:%s", host, port))

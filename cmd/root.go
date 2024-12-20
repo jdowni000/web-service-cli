@@ -16,14 +16,14 @@ var rootCmd = &cobra.Command{
 	Long: `A simple cli tool designed to help retrieve json data from a local running 
 image/container on port 8080. This tool was designed specifically to target 
 https://github.com/jdowni000/gameserver. You may hit the root that retrieves condensed
-information for all games available, or provide the id with the flag -i with the id number.
+information for all games available, or provide the id with the flag -g with the id number.
 
 For example: 
 	web-service-cli webservice
 	
 	or
 
-	web-service-cli webservice -i 1
+	web-service-cli webservice -g 1
 `,
 }
 
